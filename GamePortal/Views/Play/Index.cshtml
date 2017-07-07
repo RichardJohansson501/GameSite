@@ -1,0 +1,84 @@
+﻿
+@model ChessGame.Models.ChessBoard
+
+@{
+    ViewBag.Title = "Chess Game";
+    string[] rowLabel = new string[] { "A", "B", "C", "D", "E", "F", "G", "H" };
+    
+}
+
+<h2 class="introHeader">@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+<p></p>
+
+<div>
+    1  2   3  4 5 6 7 8
+    @{
+
+        for (int i = 0; i < 8; i++)
+        {
+            <div>
+                @rowLabel[7-i]
+                @{
+                    for (int j = 0; j < 8; j++)
+                    {
+                        var srcStr = "/Pics/Play/";
+                        srcStr += (Model.chessSquare[7 - i, j].presentPiece).ToString();
+                        srcStr += ".png";
+
+                        if (Model.chessSquare[7 - i, j].squareColor.ToString() == "Black")
+                        {
+                            <img class="blackSquarePic" src=@srcStr />
+                        }
+                        else
+                        {
+                            <img class="whiteSquarePic" src=@srcStr />
+                        }
+                    }
+                }
+                @rowLabel[7-i]
+            </div>
+        }
+    }
+    1  2   3  4 5 6 7 8
+</div>
+
+<h3 class="moveHeader">Make your move</h3>
+
+
+<div class="positionVal">
+    <label for="oldPos">Select from:</label>
+    <input id="oldPos" name="From:" placeholder="A1 ..." />
+</div>
+
+<div class="positionVal">
+    <label for="newPos">Select to:</label>
+    <input id="newPos" name="To:" placeholder="A1 ..." />
+</div>
+
+<section>
+    <button id="runButton" onclick="makeMove()">Move</button>
+    
+</section>
+
+
+<p>
+@Html.ActionLink("Refresh", "Index")
+
+</p>
+
+<section>
+    <h3>Latest move</h3>
+    <p id="outMess">
+        @ViewBag.LatestMove
+    </p>
+</section>
+
+<section>
+    <h3>Move progress message</h3>
+    <p id="outMess">
+        @ViewBag.MoveProgress
+    </p>
+</section>
+
