@@ -22,3 +22,15 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.courseIndent {
+    padding-left : 0px;
+}
+
+.moduleIndent {
+    padding-left : 30px;
+}
+
+.activityIndent {
+    padding-left : 60px;
+}

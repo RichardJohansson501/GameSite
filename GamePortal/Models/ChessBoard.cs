@@ -21,7 +21,7 @@ namespace ChessGame.Models
 
 
 
-        public enum Piece
+    public enum Piece
     {
         King,
         Queen,

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model GamePortal.Core.ViewModels.CourseTreeViewModel
+
+@{
     ViewBag.Title = "Home Page";
 }
 
@@ -8,7 +10,7 @@
     <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
 </div>
 
-<div class="row">
+@*<div class="row">
     <div class="col-md-4">
         <h2>Getting started</h2>
         <p>
@@ -28,4 +30,59 @@
         <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
+</div>*@
+
+<div>
+    <h2>Course Tree Structure</h2>
+
+    @{
+        var openedCourse = false;
+        var openedModule = false;
+        var index = 0;
+        foreach (var node in Model.nodes)
+        {
+            var linkName = node.name;
+            switch (node.nodeType)
+            {
+                case GamePortal.Core.ViewModels.NodeType.Course:
+                    if (node.opened)
+                    {
+                        <p class="courseIndent">@Html.ActionLink("-", "Index", new { toggleOpened = "toggle", nodeIndex = index }) @Html.ActionLink(linkName, "Index", new { nodeIndex = index })</p>
+                    }
+                    else
+                    {
+                        <p class="courseIndent">@Html.ActionLink("+", "Index", new { toggleOpened = "toggle", nodeIndex = index }) @Html.ActionLink(linkName, "Index", new { nodeIndex = index })</p>
+                    }
+                    openedCourse = node.opened;
+                    break;
+                case GamePortal.Core.ViewModels.NodeType.Module:
+                    if (openedCourse)
+                    {
+                        if (node.opened)
+                        {
+                            <p class="moduleIndent">@Html.ActionLink("-", "Index", new { toggleOpened = "toggle", nodeIndex = index }) @Html.ActionLink(linkName, "Index", new { nodeIndex = index })</p>
+                        }
+                        else
+                        {
+                            <p class="moduleIndent">@Html.ActionLink("+", "Index", new { toggleOpened = "toggle", nodeIndex = index }) @Html.ActionLink(linkName, "Index", new { nodeIndex = index })</p>
+                        }
+                    }
+                    openedModule = node.opened;
+                    break;
+                case GamePortal.Core.ViewModels.NodeType.Activity:
+                    if (openedModule)
+                    {
+                        <p class="activityIndent">@Html.ActionLink(linkName, "Index", new { nodeIndex = index })</p>   
+                    }
+                    break;
+                default:
+                    break;
+            }
+            index++;
+        }
+    }
+
+    <h2>Fetched node description:</h2>
+    <p>@Model.nodeDescr</p>
+
 </div>
